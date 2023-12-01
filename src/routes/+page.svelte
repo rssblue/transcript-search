@@ -123,38 +123,51 @@
 	}
 </script>
 
-<main>
-	<header>
-		<support>
-			<p>Support Transcript Search Tool</p>
-			<p>
-				Install
-				<a
-					href="https://chrome.google.com/webstore/detail/alby-bitcoin-lightning-wa/iokeahhehimjnekafflcihljlcjccdbe"
-				>
-					<img src="/alby-small.png" alt="alby logo" class="alby-logo" />
-					Alby
-				</a>
-				today
-			</p>
-		</support>
+<header class="flex flex-col max-w-5xl mx-auto prose mt-3">
+  <h1 class="text-center">Transcript Search Tool</h1>
+  <div class="flex flex-col md:flex-row flex md:justify-around text-center gap-3">
+    <span>
+    Install
+			<a
+				href="https://chrome.google.com/webstore/detail/alby-bitcoin-lightning-wa/iokeahhehimjnekafflcihljlcjccdbe"
+			>
+				<img class="inline-block w-6 h-6 my-0"
+        src="/alby-small.png" alt="alby logo" />
+				Alby
+			</a>
+		</span>
+    <span>⚡ <span class="select-all">transcriptsearchtool@getalby.com</span></span>
+  </div>
+			
+</header>
+<main class="prose mx-auto max-w-3xl mt-7 flex flex-col px-2 md:px-0">
 
-		<fetch-feed>
+		<div class="flex w-full md:w-3/5 mx-auto flex-col md:flex-row">
 			<input
+        class="block w-full h-10 border border-gray-300 rounded-tl-md rounded-tr-md md:rounded-tr-none md:rounded-bl-md text-center placeholder:text-center md:placeholder:text-left md:text-left"
 				bind:value={indexQuery}
-				placeholder="search for podcast"
+				placeholder="Podcast title"
 				on:keypress={(e) => handleInput(e, searchPodcastIndex)}
 			/>
-			<button on:click={searchPodcastIndex}>Search Directory</button>
-		</fetch-feed>
-		<p class="alby-address">⚡ transcriptsearchtool@getalby.com</p>
-	</header>
+			<button 
+        class="h-10 px-4 border border-gray-300 border-t-0 rounded-bl-md rounded-br-md md:border-t md:border-l-0 md:rounded-bl-none md:rounded-tr-md bg-gray-100 hover:bg-gray-200 font-bold"
+        on:click={searchPodcastIndex}
+        >Search</button>
+		</div>
 
 	{#if podcastIndexSearchResults.length}
-		<ul>
+		<ul class="pl-0">
 			{#each podcastIndexSearchResults as feed}
-				<li class="pi-result" on:click={fetchTranscript.bind(this, feed?.originalUrl)}>
-					<img src={feed?.artwork || feed?.image} alt={feed?.title} width="40" height="40" />
+				<li 
+          class="flex gap-2 items-center hover:bg-gray-100 cursor-pointer pl-0"
+          on:click={fetchTranscript.bind(this, feed?.originalUrl)}
+          >
+					<img 
+            class="my-0 w-16"
+            src={feed?.artwork || feed?.image} 
+            alt={feed?.title}
+            width="40"
+            height="40" />
 					{feed?.title}
 				</li>
 			{/each}
@@ -162,7 +175,7 @@
 	{/if}
 
 	{#if feed?.title}
-		<h1>{feed?.title || ''}</h1>
+		<h2>{feed?.title || ''}</h2>
 		<search-transcripts>
 			<input
 				bind:value={searchInput}
@@ -190,13 +203,6 @@
 							</li>
 						{/each}
 					</ul>
-					<cashapp>
-						<div>
-							<h3>Do you like this service?</h3>
-							<h4>Consider using CashApp to <br /> help pay for development and hosting.</h4>
-						</div>
-						<img src="/$curiocaster.png" />
-					</cashapp>
 				</left-pane>
 				<right-pane>
 					<Transcripts
@@ -215,40 +221,6 @@
 </main>
 
 <style>
-	main {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-
-	header {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	fetch-feed,
-	search-transcripts {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-	}
-
-	h1 {
-		text-align: center;
-	}
-
-	h3 {
-		padding: 0 16px;
-		margin: 8px 0;
-	}
-
-	input {
-		width: 50%;
-	}
-
 	pane-container {
 		display: flex;
 		justify-content: space-between;
@@ -259,13 +231,6 @@
 		border: 2px solid lightgray;
 	}
 
-	li {
-		list-style: none;
-		padding: 8px 0;
-		color: blue;
-		text-decoration: underline;
-		cursor: pointer;
-	}
 	left-pane,
 	right-pane {
 		width: 50%;
@@ -284,38 +249,6 @@
 		height: calc(100% - 308px);
 		border-bottom: 2px solid lightgray;
 		margin: 8px 0 0 0;
-	}
-
-	cashapp {
-		display: flex;
-		height: 268px;
-		justify-content: space-evenly;
-	}
-
-	cashapp h4 {
-		margin: 0 0 12px 0;
-		text-align: center;
-	}
-	cashapp h3 {
-		text-align: center;
-	}
-
-	cashapp img {
-		margin: 8px;
-	}
-
-	support {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	p {
-		margin: 0;
-		white-space: nowrap;
-	}
-	.alby-logo {
-		width: 20px;
 	}
 
 	.pi-result {
