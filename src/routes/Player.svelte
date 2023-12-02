@@ -19,7 +19,11 @@
 	});
 </script>
 
-<audio bind:this={player} controls />
+<audio 
+  class="fixed bottom-0 left-0 right-0 z-50 mb-2 px-2 sm:px-5"
+  bind:this={player}
+  controls 
+  />
 
 <style>
 	audio {

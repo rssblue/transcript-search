@@ -140,14 +140,16 @@
 </script>
 
 {#if episodeTranscript?.length}
-	<h3>{episode.title}</h3>
-	<div class="bar-2">
-		<label>
+	<h3 class="text-center">{episode.title}</h3>
+	<div class="flex mb-3">
+		<label class="flex items-center">
 			<input type="checkbox" checked={scrollStatus === 'Enabled'} on:change={handleScrollStatus} />
+      <span class="ml-2">
 			Scrolling {scrollStatus}
+      </span>
 		</label>
 		{#if filteredIndices.length > 0}
-			<div class="index-select">
+			<div class="ml-auto">
 				<button class="previous" on:click={getPreviousIndex}>&#9664</button>
 				<span>
 					{currentIndex + 1} of {filteredIndices.length}
@@ -157,10 +159,9 @@
 		{/if}
 	</div>
 
-	<div class="list-height" bind:clientHeight={listHeight}>
+	<div class="h-80 md:h-screen overflow-y-auto" bind:clientHeight={listHeight}>
 		<VirtualList
 			height={listHeight}
-			width="100%"
 			itemCount={episodeTranscript.length}
 			itemSize={50}
 			overscanCount={5}
@@ -172,94 +173,19 @@
 				let:index
 				let:style
 				{style}
-				class="row"
-				class:active={index === transcriptIndex}
-				class:searched={index === filteredIndices[currentIndex]}
+				class="flex items-center my-7"
+				class:text-red-600={index === transcriptIndex}
+				class:font-bold={index === transcriptIndex || index === filteredIndices[currentIndex]}
+				class:text-purple-600={index === filteredIndices[currentIndex]}
 				on:click={jumpToSection.bind(this, episodeTranscript?.[index], index)}
 			>
-				<p class="transcript-text">
+				<span class="leading-snug">
 					{@html episodeTranscript?.[index].text || ''}
-				</p>
-				<p class="transcript-time">
+				</span>
+				<span class="flex-none ml-auto text-sm font-mono mr-1">
 					{convertTime(episodeTranscript?.[index].start) ?? ''}
-				</p>
+				</span>
 			</div>
 		</VirtualList>
 	</div>
 {/if}
-
-<style>
-	.list-height {
-		height: calc(100% - 67px);
-		padding: 0 0 0 8px;
-	}
-
-	div {
-		display: flex;
-	}
-	div.searched p {
-		font-weight: 700;
-		color: purple;
-	}
-	div.active p {
-		font-weight: 700;
-		color: red;
-	}
-
-	.transcript-text {
-		flex: 1 1 auto;
-	}
-
-	.transcript-time {
-		padding-right: 8px;
-	}
-
-	.bar-2 {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0 0 0 8px;
-		border-bottom: 1px solid lightgray;
-	}
-
-	.index-select > span {
-		width: 100px;
-		text-align: center;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--primary-text-color);
-	}
-
-	button {
-		background-color: transparent;
-		border: none;
-		padding: 0;
-		margin: 0;
-		color: var(--primary-text-color);
-		height: 36px;
-		width: 36px;
-		text-align: center;
-		cursor: pointer;
-	}
-	label {
-		cursor: pointer;
-	}
-
-	.next {
-		text-align: start;
-	}
-	.previous {
-		text-align: end;
-	}
-
-	.row {
-		cursor: pointer;
-	}
-
-	h3 {
-		text-align: center;
-		margin: 8px 0 0 0;
-		white-space: nowrap;
-	}
-</style>

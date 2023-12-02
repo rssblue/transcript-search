@@ -123,24 +123,26 @@
 	}
 </script>
 
-<header class="flex flex-col max-w-5xl mx-auto prose mt-3">
+<header class="flex flex-col max-w-7xl mx-auto prose mt-3">
   <h1 class="text-center">Transcript Search Tool</h1>
-  <div class="flex flex-col md:flex-row flex md:justify-around text-center gap-3">
+  <div class="flex flex-col md:flex-row flex md:justify-center text-center gap-3 md:gap-14">
     <span>
     Install
 			<a
 				href="https://chrome.google.com/webstore/detail/alby-bitcoin-lightning-wa/iokeahhehimjnekafflcihljlcjccdbe"
+        target="_blank"
+        rel="noreferrer"
 			>
 				<img class="inline-block w-6 h-6 my-0"
         src="/alby-small.png" alt="alby logo" />
 				Alby
 			</a>
 		</span>
-    <span>⚡ <span class="select-all">transcriptsearchtool@getalby.com</span></span>
+    <span>Support: ⚡ <span class="select-all">transcriptsearchtool@getalby.com</span></span>
   </div>
 			
 </header>
-<main class="prose mx-auto max-w-3xl mt-7 flex flex-col px-2 md:px-0">
+<main class="prose mx-auto max-w-5xl mt-7 flex flex-col px-2 sm:px-5 pb-10">
 
 		<div class="flex w-full md:w-3/5 mx-auto flex-col md:flex-row">
 			<input
@@ -152,7 +154,7 @@
 			<button 
         class="h-10 px-4 border border-gray-300 border-t-0 rounded-bl-md rounded-br-md md:border-t md:border-l-0 md:rounded-bl-none md:rounded-tr-md bg-gray-100 hover:bg-gray-200 font-bold"
         on:click={searchPodcastIndex}
-        >Search</button>
+        >Find&nbsp;podcast</button>
 		</div>
 
 	{#if podcastIndexSearchResults.length}
@@ -172,39 +174,48 @@
 				</li>
 			{/each}
 		</ul>
-	{/if}
+  {/if}
+
 
 	{#if feed?.title}
-		<h2>{feed?.title || ''}</h2>
-		<search-transcripts>
+		<h2 class="text-center">{feed?.title || ''}</h2>
+
+		<div class="flex w-full mx-auto flex-col md:flex-row">
 			<input
+        class="block w-full h-10 border border-gray-300 rounded-tl-md rounded-tr-md md:rounded-tr-none md:rounded-bl-md text-center placeholder:text-center md:placeholder:text-left md:text-left"
 				bind:value={searchInput}
-				placeholder={`search term  (put exact matches inside of double quotes, i.e. "rad"`}
+				placeholder={`Search term  (put exact matches inside of double quotes, e.g., "rad")`}
 				on:keypress={(e) => handleInput(e, searchTranscripts)}
 			/>
-			<button on:click={searchTranscripts}>Search Transcripts</button>
-		</search-transcripts>
+			<button 
+        class="h-10 px-4 border border-gray-300 border-t-0 rounded-bl-md rounded-br-md md:border-t md:border-l-0 md:rounded-bl-none md:rounded-tr-md bg-gray-100 hover:bg-gray-200 font-bold"
+        on:click={searchTranscripts}
+        >Search&nbsp;transcripts</button>
+		</div>
 
 		{#if searchResults?.length}
-			<pane-container>
-				<left-pane>
+			<div class="grid grid-cols-1 md:grid-cols-2 mt-7 gap-3">
+				<div class="flex flex-col">
 					<h3>Episodes</h3>
-					<ul>
+					<ul class="pl-0 style-none h-60 md:h-screen overflow-y-auto">
 						{#each searchResults || [] as result}
 							<li
 								on:click={() => {
 									selectedEpisode = feed.item[result[0]];
 									player.src = selectedEpisode.enclosure['@_url'];
 								}}
+                class="hover:bg-gray-100 cursor-pointer pl-0 py-2"
+                class:bg-gray-100={selectedEpisode?.title === feed.item[result[0]].title}
 							>
-								{feed.item[result[0]].title} - {result[1].length} occurrence{`${
+								<span class="font-bold">{feed.item[result[0]].title}</span> - {result[1].length} occurrence{`${
 									result[1].length > 1 ? 's' : ''
 								}`}
 							</li>
 						{/each}
 					</ul>
-				</left-pane>
-				<right-pane>
+				</div>
+				<div>
+          {#if selectedEpisode?.title}
 					<Transcripts
 						episode={selectedEpisode}
 						{searchQuery}
@@ -212,51 +223,21 @@
 						bind:transcriptIndex
 						bind:episodeTranscript
 					/>
-				</right-pane>
-			</pane-container>
+          {:else}
+          <div>
+						<div>
+							<h3>Do you like this service?</h3>
+							<span>Consider using CashApp to help pay for development and hosting.</span>
+						</div>
+            <a href="https://cash.app/$curiocaster" target="_blank" rel="noreferrer">
+              <img width="100" height="100" class="w-full md:w-80" src="/$curiocaster.png" />
+            </a>
+					</div>
+          {/if}
+				</div>
+			</div>
 			<Player bind:player bind:transcriptIndex bind:episodeTranscript />
 		{:else if !isLoading}
 			<p>No Search Results Found</p>{/if}
 	{/if}
 </main>
-
-<style>
-	pane-container {
-		display: flex;
-		justify-content: space-between;
-		width: 100%;
-		height: calc(100vh - 250px);
-		overflow: hidden;
-		margin: 16px 0;
-		border: 2px solid lightgray;
-	}
-
-	left-pane,
-	right-pane {
-		width: 50%;
-		overflow: auto;
-		height: 100%;
-	}
-
-	right-pane {
-		border-left: 1px solid lightgray;
-	}
-	left-pane {
-		border-right: 1px solid lightgray;
-	}
-	left-pane ul {
-		overflow: auto;
-		height: calc(100% - 308px);
-		border-bottom: 2px solid lightgray;
-		margin: 8px 0 0 0;
-	}
-
-	.pi-result {
-		display: flex;
-		align-items: center;
-	}
-
-	.pi-result img {
-		padding-right: 8px;
-	}
-</style>
