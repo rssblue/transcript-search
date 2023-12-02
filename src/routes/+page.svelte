@@ -195,9 +195,9 @@
 
 		{#if searchResults?.length}
 			<div class="grid grid-cols-1 md:grid-cols-2 mt-7 gap-3">
-				<div class="flex flex-col">
-					<h3>Episodes</h3>
-					<ul class="pl-0 style-none h-60 md:h-screen overflow-y-auto">
+				<div class="flex flex-col border border-gray-300 rounded-md p-3">
+					<h3 class="mt-0">Episodes</h3>
+					<ul class="pl-0 style-none h-80 overflow-y-auto">
 						{#each searchResults || [] as result}
 							<li
 								on:click={() => {
@@ -214,7 +214,7 @@
 						{/each}
 					</ul>
 				</div>
-				<div>
+				<div class="border border-gray-300 rounded-md p-3">
           {#if selectedEpisode?.title}
 					<Transcripts
 						episode={selectedEpisode}
@@ -226,7 +226,7 @@
           {:else}
           <div>
 						<div>
-							<h3>Do you like this service?</h3>
+							<h3 class="mt-0">Do you like this service?</h3>
 							<span>Consider using CashApp to help pay for development and hosting.</span>
 						</div>
             <a href="https://cash.app/$curiocaster" target="_blank" rel="noreferrer">

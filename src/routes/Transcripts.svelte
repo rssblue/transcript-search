@@ -140,26 +140,26 @@
 </script>
 
 {#if episodeTranscript?.length}
-	<h3 class="text-center">{episode.title}</h3>
-	<div class="flex mb-3">
+	<h3 class="text-center mt-0">{episode.title}</h3>
+	<div class="flex flex-col md:flex-row mb-3 gap-3 justify-center items-center">
 		<label class="flex items-center">
 			<input type="checkbox" checked={scrollStatus === 'Enabled'} on:change={handleScrollStatus} />
-      <span class="ml-2">
+      <span class="ml-1.5">
 			Scrolling {scrollStatus}
       </span>
 		</label>
 		{#if filteredIndices.length > 0}
-			<div class="ml-auto">
-				<button class="previous" on:click={getPreviousIndex}>&#9664</button>
+			<div class="md:ml-auto">
+				<button class="text-xl" on:click={getPreviousIndex}>&#9664</button>
 				<span>
 					{currentIndex + 1} of {filteredIndices.length}
 				</span>
-				<button class="next" on:click={getNextIndex}>&#9654</button>
+				<button class="text-xl" on:click={getNextIndex}>&#9654</button>
 			</div>
 		{/if}
 	</div>
 
-	<div class="h-80 md:h-screen overflow-y-auto" bind:clientHeight={listHeight}>
+	<div class="h-80 overflow-y-auto" bind:clientHeight={listHeight}>
 		<VirtualList
 			height={listHeight}
 			itemCount={episodeTranscript.length}
