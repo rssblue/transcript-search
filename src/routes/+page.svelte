@@ -142,7 +142,7 @@
   </div>
 			
 </header>
-<main class="prose mx-auto max-w-5xl mt-7 flex flex-col px-2 sm:px-5 pb-10">
+<main class="prose mx-auto max-w-5xl mt-7 flex flex-col px-2 sm:px-5 pb-20">
 
 		<div class="flex w-full md:w-3/5 mx-auto flex-col md:flex-row">
 			<input
